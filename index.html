@@ -78,24 +78,24 @@
 </style>
 </head>
 <body>
-<h1>🎃 HallowWord - HallowGames 🎃</h1>
-<p>Type your team name and guess as many words as you can in 2 minutes!</p>
+  <h1>🎃 HallowWord - HallowGames 🎃</h1>
+  <p>Type your team name and guess as many words as you can in 2 minutes!</p>
 
-<div id="start-screen">
-  <input type="text" id="teamName" placeholder="Team name">
-  <br>
-  <button onclick="startGame()">Start Game</button>
-</div>
-
-<div id="game">
-  <div id="timer">⏱️ 2:00</div>
-  <p id="hint"></p>
-  <div id="grid"></div>
-  <input type="text" id="guessInput" placeholder="Enter your guess">
-  <button onclick="submitGuess()">Submit</button>
-  <p id="message"></p>
-  <p id="progress"></p>
-</div>
+  <div id="start-screen">
+    <input type="text" id="teamName" placeholder="Team name">
+    <br>
+    <button onclick="startGame()">Start Game</button>
+  </div>
+  
+  <div id="game">
+    <div id="timer">⏱️ 2:00</div>
+    <p id="hint"></p>
+    <div id="grid"></div>
+    <input type="text" id="guessInput" placeholder="Enter your guess">
+    <button onclick="submitGuess()">Submit</button>
+    <p id="message"></p>
+    <p id="progress"></p>
+  </div>
 
 <script>
 const words = [
@@ -111,7 +111,7 @@ const words = [
   { word: "CAVEIRA", hint: "Scary" }
 ];
 
-const sheetURL = "https://script.google.com/macros/s/AKfycbyeGrgf8PMqrowI8WFlnzIFlD8e1-06x43QYwueGdmR_yk5C64DKnAUtcNY8qEU81aiOw/exec";
+const sheetURL = "https://script.google.com/macros/s/AKfycbxuevVAnkolIvi3o54QFoXYzBr6jX1FDMl9hcJK6ZF8YWufe8_jBVKW9KNJ-LJ-7EjH/exec";
 
 let currentWordIndex = 0;
 let attempts = 0;
@@ -134,6 +134,7 @@ function startGame() {
 
 function loadWord() {
   if (currentWordIndex >= words.length) return endGame();
+
   const wordObj = words[currentWordIndex];
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -168,14 +169,12 @@ function submitGuess() {
   const targetArray = target.split("");
   const cellElements = row.children;
 
-  // Contar letras da palavra alvo
-  const targetLetterCount = {};
+const targetLetterCount = {};
   targetArray.forEach(letter => {
     targetLetterCount[letter] = (targetLetterCount[letter] || 0) + 1;
   });
-
-  // Primeiro: letras corretas
-  for (let i = 0; i < targetArray.length; i++) {
+  
+for (let i = 0; i < targetArray.length; i++) {
     const cell = cellElements[i];
     cell.textContent = guessArray[i] || "";
     if (guessArray[i] === targetArray[i]) {
@@ -184,17 +183,18 @@ function submitGuess() {
     }
   }
 
-  // Depois: letras presentes (amarelo) ou ausentes
-  for (let i = 0; i < targetArray.length; i++) {
+for (let i = 0; i < targetArray.length; i++) {
     const cell = cellElements[i];
     if (cell.classList.contains("correct")) continue;
-    if (guessArray[i] && targetLetterCount[guessArray[i]] > 0) {
+
+if (guessArray[i] && targetLetterCount[guessArray[i]] > 0) {
       cell.classList.add("present");
       targetLetterCount[guessArray[i]]--;
     } else {
       cell.classList.add("absent");
     }
   }
+
 
   sendResult(team, target, input, attempts + 1, input === target ? "Correct" : "Wrong");
 
